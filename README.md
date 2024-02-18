@@ -97,4 +97,4 @@ Here's how you can retrieve each detail required for the configuration file:
 
 ## Understanding the flow
 
-![How command works](assets/Runscope_module_trigger_uid.png)
+![How command works](assets/How_command_works.png)
