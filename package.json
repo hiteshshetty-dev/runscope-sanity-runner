@@ -10,7 +10,7 @@
     "axios": "^1.6.7",
     "fs-extra": "^11.2.0",
     "googleapis": "^133.0.0",
-    "jsonschema": "1.4.0"
+    "jsonschema": "1.4.1"
   },
   "description": "This command helps to runscope modules parallely and collect those result in google sheets",
   "devDependencies": {
