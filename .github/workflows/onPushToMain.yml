@@ -24,20 +24,6 @@ jobs:
           script: |
             core.setFailed('Prerelease requires a dist tag name in your package.json like beta in 1.1.1-beta.0')
 
-      - name: Conventional Changelog Action
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@9962c3267b32873dbc552a38a8397194361e1101
-        with:
-          git-user-name: svc-cli-bot
-          git-user-email: svc_cli_bot@salesforce.com
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          tag-prefix: ""
-          # Setting 'release-count' to 0 will keep ALL releases in the change log (no pruning)
-          release-count: "0"
-          pre-release: ${{ inputs.prerelease }}
-          pre-release-identifier: ${{ steps.distTag.outputs.tag }}
-          # ternary-ish: https://github.com/actions/runner/issues/409#issuecomment-752775072
-          output-file: ${{ inputs.prerelease && 'false' || 'CHANGELOG.md' }} # If prerelease, do not write the changelog file
       - name: Create Github Release
         uses: actions/create-release@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
