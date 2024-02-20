@@ -26,6 +26,7 @@ export interface IConfig {
     shareReportToFollowingUsers: string[]
     slackDetails: SlackDetails
     googleCredentialsPath: string
+    threadMessagePrefix?: string
 }
 
 export interface SlackDetails {
@@ -92,7 +93,8 @@ export function transformConfig(config: IConfig) {
         triggerUIDs: config.runscopeDetails.triggerUids,
         userEmails: config.shareReportToFollowingUsers,
         webhookUrl: config.runscopeDetails.webhookUrl,
-        googleCredsPath: config.googleCredentialsPath
+        googleCredsPath: config.googleCredentialsPath,
+        threadMessagePrefix: config.threadMessagePrefix
     }
     return transformedConfig
 }

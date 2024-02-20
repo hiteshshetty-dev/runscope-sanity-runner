@@ -52,6 +52,9 @@ export const configSchema = {
         },
         "googleCredentialsPath": {
             "type": "string"
+        },
+        "threadMessagePrefix": {
+            "type": "string"
         }
     },
     "required": [

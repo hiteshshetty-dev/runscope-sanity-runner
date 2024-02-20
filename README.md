@@ -75,6 +75,7 @@ Before using the CLI command, you need to set up a configuration file. Here's an
   * webhookUrl: The URL for the webhook.
 * shareReportToFollowingUsers: An array of email addresses to which reports will be shared.
 * googleCredentialsPath: The file path to your Google credentials JSON file.
+* threadMessagePrefix: (optional) The prefix message to be added in thread message
 
 ## Retrieving Configuration Details
 

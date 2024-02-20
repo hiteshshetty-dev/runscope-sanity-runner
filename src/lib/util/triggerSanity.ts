@@ -81,13 +81,14 @@ interface ISendSlackMessage {
     slackApiToken: string;
     slackChannelId: string;
     testEnvName: string;
+    threadMessagePrefix?: string;
 }
-async function sendSlackMessage({ googleSheetURL, slackApiToken, slackChannelId, testEnvName }: ISendSlackMessage) {
+async function sendSlackMessage({ googleSheetURL, slackApiToken, slackChannelId, testEnvName, threadMessagePrefix="" }: ISendSlackMessage) {
     try {
         const response: any = await axios.post('https://slack.com/api/chat.postMessage', {
             channel: slackChannelId,
             mrkdwn: true,
-            text: `Sanity triggered on *${testEnvName}* environment\n*Sanity Report*: ${googleSheetURL}`,
+            text: `${threadMessagePrefix}Sanity triggered on *${testEnvName}* environment\n*Sanity Report*: ${googleSheetURL}`,
         }, {
             headers: {
                 Authorization: `Bearer ${slackApiToken}`,
@@ -160,6 +161,7 @@ export interface ITriggerSanity {
     userEmails: string[];
     webhookUrl: string;
     googleCredsPath: string;
+    threadMessagePrefix?: string;
 }
 export default async function runTest({
     runscopeEnvUID,
@@ -169,7 +171,8 @@ export default async function runTest({
     triggerUIDs,
     userEmails,
     webhookUrl,
-    googleCredsPath
+    googleCredsPath,
+    threadMessagePrefix = ""
 }: ITriggerSanity) {
     new GoogleSheet(googleCredsPath);
     
@@ -178,7 +181,8 @@ export default async function runTest({
         googleSheetURL: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
         slackApiToken,
         slackChannelId,
-        testEnvName
+        testEnvName,
+        threadMessagePrefix
     });
     const testTriggerURLS = triggerUIDs.map((triggerUid: string) => `https://api.runscope.com/radar/${triggerUid}/trigger?runscope_environment=${runscopeEnvUID}&runscope_notification_url=${webhookUrl}&slack_thread_ts=${response}&spreadsheet_id=${spreadsheetId}`)
     const testTriggerURLSLength = testTriggerURLS.length
