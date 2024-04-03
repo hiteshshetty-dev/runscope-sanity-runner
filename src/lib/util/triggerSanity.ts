@@ -82,13 +82,108 @@ interface ISendSlackMessage {
     slackChannelId: string;
     testEnvName: string;
     threadMessagePrefix?: string;
+    totalModules?: number
 }
-async function sendSlackMessage({ googleSheetURL, slackApiToken, slackChannelId, testEnvName, threadMessagePrefix="" }: ISendSlackMessage) {
+async function sendSlackMessage({ googleSheetURL, slackApiToken, slackChannelId, testEnvName, threadMessagePrefix="", totalModules=0 }: ISendSlackMessage) {
     try {
+        const header = {
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: `📝 ${threadMessagePrefix}Sanity triggered on *${testEnvName}* environment `
+            }
+        };
+        const summary = {
+            "type": "rich_text",
+            "elements": [
+                {
+                    "type": "rich_text_section",
+                    "elements": [
+                        {
+                            "type": "text",
+                            "text": "Report Summary:"
+                        }
+                    ]
+                },
+                {
+                    "type": "rich_text_list",
+                    "style": "bullet",
+                    "elements": [
+                        {
+                            "type": "rich_text_section",
+                            "elements": [
+                                {
+                                    "type": "text",
+                                    "text": "Total Modules: "
+                                },
+                                {
+                                    "type": "text",
+                                    "text": String(totalModules)
+                                }
+                            ]
+                        },
+                        {
+                            "type": "rich_text_section",
+                            "elements": [
+                                {
+                                    "type": "text",
+                                    "text": "Passed Modules: "
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "0"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "rich_text_section",
+                            "elements": [
+                                {
+                                    "type": "text",
+                                    "text": "Failed Modules: "
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "0"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "rich_text_section",
+                            "elements": [
+                                {
+                                    "type": "text",
+                                    "text": "Total Duration: "
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "0"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " secs "
+                                },
+                                {
+                                    "type": "emoji",
+                                    "name": "clock"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+        const sheetReport = {
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: `<${googleSheetURL}|View complete result>`,
+            },
+        };
         const response: any = await axios.post('https://slack.com/api/chat.postMessage', {
             channel: slackChannelId,
-            mrkdwn: true,
-            text: `${threadMessagePrefix}Sanity triggered on *${testEnvName}* environment\n*Sanity Report*: ${googleSheetURL}`,
+            blocks: [header, summary, { type: "divider" }, sheetReport],
+            text: "Report Summary",
         }, {
             headers: {
                 Authorization: `Bearer ${slackApiToken}`,
@@ -182,9 +277,10 @@ export default async function runTest({
         slackApiToken,
         slackChannelId,
         testEnvName,
-        threadMessagePrefix
+        threadMessagePrefix,
+        totalModules: triggerUIDs.length
     });
-    const testTriggerURLS = triggerUIDs.map((triggerUid: string) => `https://api.runscope.com/radar/${triggerUid}/trigger?runscope_environment=${runscopeEnvUID}&runscope_notification_url=${webhookUrl}&slack_thread_ts=${response}&spreadsheet_id=${spreadsheetId}`)
+    const testTriggerURLS = triggerUIDs.map((triggerUid: string) => `https://api.runscope.com/radar/${triggerUid}/trigger?runscope_environment=${runscopeEnvUID}&runscope_notification_url=${webhookUrl}&slack_thread_ts=${response}&spreadsheet_id=${spreadsheetId}&slack_channel_id=${slackChannelId}`)
     const testTriggerURLSLength = testTriggerURLS.length
     console.log(`Number of test trigger urls: ${testTriggerURLSLength}`)
     
