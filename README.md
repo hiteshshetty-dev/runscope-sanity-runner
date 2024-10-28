@@ -1,5 +1,6 @@
 # Runscope Sanity trigger
 <!-- toc -->
+* [Runscope Sanity trigger](#runscope-sanity-trigger)
 * [Usage](#usage)
 * [Commands](#commands)
 * [Config File](#config-file)
@@ -11,7 +12,7 @@ $ npm install -g runscope-sanity-runner
 $ trigger COMMAND
 running command...
 $ trigger (--version)
-runscope-sanity-runner/1.0.0 darwin-arm64 node-v16.20.0
+runscope-sanity-runner/1.0.4-alpha.0 darwin-arm64 node-v18.17.1
 $ trigger --help [COMMAND]
 USAGE
   $ trigger COMMAND
@@ -40,7 +41,7 @@ EXAMPLES
   $ trigger sanity --config="./config.json"
 ```
 
-_See code: [src/commands/sanity/index.ts](https://github.com/hiteshshetty-dev/runscope-sanity-runner/blob/v1.0.0/src/commands/sanity/index.ts)_
+_See code: [src/commands/sanity/index.ts](https://github.com/hiteshshetty-dev/runscope-sanity-runner/blob/v1.0.4-alpha.0/src/commands/sanity/index.ts)_
 <!-- commandsstop -->
 
 # Config File
