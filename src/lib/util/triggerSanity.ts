@@ -280,7 +280,7 @@ export default async function runTest({
         threadMessagePrefix,
         totalModules: triggerUIDs.length
     });
-    const testTriggerURLS = triggerUIDs.map((triggerUid: string) => `https://api.runscope.com/radar/${triggerUid}/trigger?runscope_environment=${runscopeEnvUID}&runscope_notification_url=${webhookUrl}&slack_thread_ts=${response}&spreadsheet_id=${spreadsheetId}&slack_channel_id=${slackChannelId}`)
+    const testTriggerURLS = triggerUIDs.map((triggerUid: string) => `https://api.runscope.com/radar/${triggerUid}/trigger?runscope_environment=${runscopeEnvUID}&runscope_notification_url=${webhookUrl}&slack_thread_ts=${response}&spreadsheet_id=${spreadsheetId}&slack_channel_id=${slackChannelId}&service_name=${threadMessagePrefix}`)
     const testTriggerURLSLength = testTriggerURLS.length
     console.log(`Number of test trigger urls: ${testTriggerURLSLength}`)
     
